@@ -1,11 +1,13 @@
 let BoardGUI = function() {
 
 	let boardLogic;
+	let boardConfig;
 
 	let init = function() {
 		boardLogic = BoardLogic();
+		boardConfig = ConfigGUI(configChangeCallback);
+
 		fillBoard();
-		
 		configureActions();
 	}
 	
@@ -80,17 +82,13 @@ let BoardGUI = function() {
 	let selectRelatives = function(selectedCell) {
 		let cellValue = selectedCell.innerText;
 
-		let selectionStrategy;
-//		let selectionStrategy = selectRelativesAtSameRowColBlock;
-
-		if (cellValue) {
-			selectionStrategy = selectRelativesWithSameValue;
+		if (cellValue && boardConfig.selectSameValue()) {
+			selectRelativesWithSameValue(selectedCell);
 		}
 
-		if(selectionStrategy) {
-			selectionStrategy(selectedCell);	
-		}
-		
+		if(boardConfig.selectSameColRow()){
+			selectRelativesAtSameRowColBlock(selectedCell);
+		}		
 	}
 
 	let selectRelativesWithSameValue = function(selectedCell) {
@@ -173,7 +171,7 @@ let BoardGUI = function() {
 		
 		let row = getCellElementRow(clickedCell);
 		let col = getCellElementCol(clickedCell);
-		boardLogic.selectCell(new Cell(row, col))
+		boardLogic.selectCell(new Cell(row, col));
 	}
 	
 	let onKeyBoardCellClick = function(event) {
@@ -286,6 +284,10 @@ let BoardGUI = function() {
 	
 	let getCellElementCol = function(element){
 		return element.getAttribute("col");
+	}
+
+	let configChangeCallback = function(){
+		refreshBoard();
 	}
 	
 	init();

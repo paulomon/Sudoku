@@ -175,13 +175,40 @@
 				</div>
 			</div>
 			
-			<div class="container-item">
-			
+			<div class="container-item container-item-bottom">
+				<div class="config-menu" style="color: white;">
+					<div class="config-title">
+						<div>
+							<span>Options</span>
+						</div>
+						<div class="config-image">
+							<img src="images/chevron-right.png">
+						</div>
+					</div>
+					<div class="config-options hidden">
+						<label>
+							<input type="checkbox" id="config-same-row-column"> Highlight cells of the same row and column
+						</label>
+
+						<label>
+							<input type="checkbox" id="config-same-block"> Highlight cells from the same block
+						</label>
+						
+						<label>
+							<input type="checkbox" id="same-value"> Highlight cells with the same value
+						</label>
+						
+						<label>
+							<input type="checkbox" id="conflict-cell"> Highlight cells with conflicting values
+						</label>						
+					</div>
+				</div>
 			</div>
 		
 		</div>
 	</body>
 	
+	<script type="text/javascript" src="scripts/configs.js"></script>
 	<script type="text/javascript" src="scripts/difficult.js"></script>
 	<script type="text/javascript" src="scripts/puzzle-generator.js"></script>
 	<script type="text/javascript" src="scripts/cell.js"></script>
@@ -190,6 +217,6 @@
 	<script type="text/javascript">
 		(function() {
 			BoardGUI();
-		})()
+		})() 
 	</script>
 </html>
