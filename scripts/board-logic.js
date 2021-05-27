@@ -106,7 +106,7 @@ let BoardLogic = function() {
 		return !!selectedCell;
 	}
 	
-	let isCellEditable = function(){
+	let isCellEditable = function() {
 		if(!hasSelectedCell()){
 			return false;
 		}
@@ -144,6 +144,91 @@ let BoardLogic = function() {
 		return currentDifficult.name;
 	}
 
+	let getConflictCells = function() {
+		let conflicts = [];
+		
+		for(let i = 0; i < 9; i++){
+			for(let j = 0; j < 9; j++){
+				let cell = new Cell(i, j, board[i][j]);
+
+				if(!cell.value || isDefaultCell(cell)) {
+					continue;
+				}
+
+				if(isConflict(cell)) {
+					conflicts.push(cell);
+				}
+			}
+		}
+		
+		return conflicts;
+	}
+
+	let isDefaultCell = function(cell) {
+		return originalBoard[cell.row][cell.col] != 0;
+	}
+
+	let isConflict = function(cell) {
+		let blockNumber = getBlockNumber(cell.row, cell.col);
+
+		for(let i = 0; i < 9; i++){
+			for(let j = 0; j < 9; j++){
+
+				if(cell.row == i && cell.col == j) {
+					continue;
+				}
+					
+				if(cell.value != board[i][j]) {
+					continue;
+				}
+
+				if(cell.row == i || cell.col == j || blockNumber == getBlockNumber(i, j)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	let getBlockNumber = function(row, col) {
+		if (row <= 2 && col <= 2) {
+			return 1;
+		}
+        	
+        if (row <= 2 && col > 2 && col <= 5) {
+			return 2;
+		}
+        	
+        if (row <= 2 && col > 5) {
+			return 3;
+		}
+        	
+        if (row > 2 && row <= 5 && col <= 2) {
+			return 4;
+		}
+			
+        if (row > 2 && row <= 5 && col > 2 && col <= 5) {
+			return 5;
+		}
+			
+        if (row > 2 && row <= 5 && col > 5) {
+			return 6;
+		}
+			
+        if (row > 5 && col <= 2) {
+			return 7;
+		}
+        	
+        if (row > 5 && col > 2 && col <= 5) {
+			return 8;
+		}
+        	
+        if (row > 5 && col > 5) {
+			return 9;
+		}
+	}
+
 	init();
 
 	return {
@@ -158,6 +243,7 @@ let BoardLogic = function() {
 		restart,
 		newGame,
 		newGameAtDifficult,
-		getDifficultName
+		getDifficultName,
+		getConflictCells
 	}
 }

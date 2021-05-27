@@ -2,7 +2,6 @@ let ConfigGUI = function(callback) {
 
     const configs = {
         SAME_ROW_AND_COLUMN: {enabled: false},
-        SAME_BLOCK: {enabled: false},
         SAME_VALUE: {enabled: false},
         CONFLICT_CELL: {enabled: false}
     }
@@ -40,18 +39,14 @@ let ConfigGUI = function(callback) {
             configs.SAME_ROW_AND_COLUMN.enabled = e.target.checked;
             callback();
         }
-        document.querySelector("#config-same-block").onchange = (e) => {
-            configs.SAME_BLOCK.enabled = e.target.checked;
-            callback();
-        }
         document.querySelector("#same-value").onchange = (e) => {
             configs.SAME_VALUE.enabled = e.target.checked;
             callback();
-        };
+        }
         document.querySelector("#conflict-cell").onchange = (e) => {
             configs.CONFLICT_CELL.enabled = e.target.checked;
             callback();
-        };
+        }
     }
 
     let selectSameValue = function() {
@@ -62,10 +57,15 @@ let ConfigGUI = function(callback) {
         return configs.SAME_ROW_AND_COLUMN.enabled;
     }
 
+    let selectConflictCell = function() {
+        return configs.CONFLICT_CELL.enabled;
+    }
+
     init();
 
     return {
         selectSameValue,
-        selectSameColRow
+        selectSameColRow,
+        selectConflictCell
     }
 }

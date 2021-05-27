@@ -87,7 +87,7 @@ let BoardGUI = function() {
 		}
 
 		if(boardConfig.selectSameColRow()){
-			selectRelativesAtSameRowColBlock(selectedCell);
+			selectRelativesAtSameRowCol(selectedCell);
 		}		
 	}
 
@@ -106,7 +106,7 @@ let BoardGUI = function() {
 		});
 	}
 
-	let selectRelativesAtSameRowColBlock = function(selectedCell) {
+	let selectRelativesAtSameRowCol = function(selectedCell) {
 		let row = selectedCell.getAttribute("row");
 		let col = selectedCell.getAttribute("col");
 
@@ -230,6 +230,7 @@ let BoardGUI = function() {
 		clearFixedCell();
 		clearSelectedCell();
 		clearSelectedRelativeCells();
+		clearConflicts();
 		clearFinishedGameMessage();
 	}
 	
@@ -267,15 +268,48 @@ let BoardGUI = function() {
 	}
 		
 	let refreshBoard = function() {
-		let selectedCell = boardLogic.getSelectedCell();
+		updateConflicts();
+
+		let cell = boardLogic.getSelectedCell();
 		
-		if(!selectedCell) {
+		if(!cell) {
 			updateRelatives();
 			return;
 		}
 		
-		let selectedCellElement = document.querySelector(`.cell[row='${selectedCell.row}'][col='${selectedCell.col}']`);
-		updateRelatives(selectedCellElement);
+		let cellElement = document.querySelector(`.cell[row='${cell.row}'][col='${cell.col}']`);
+		updateRelatives(cellElement);
+	}
+
+	let updateConflicts = function() {
+		clearConflicts();
+
+		if(!boardConfig.selectConflictCell()){
+			return;
+		}
+
+		let conflicts = boardLogic.getConflictCells();
+
+		if(conflicts.length == 0){
+			return;
+		}
+			
+		conflicts.forEach(cell => {
+			let cellElement = document.querySelector(`.cell[row='${cell.row}'][col='${cell.col}']`);
+			cellElement.classList.add("conflict");
+		});
+	}
+
+	let clearConflicts = function() {
+		let cellsInConflict = document.querySelectorAll(".conflict");
+
+		if(!cellsInConflict) {
+			return;
+		}
+			
+		cellsInConflict.forEach(element => {
+			element.classList.remove("conflict");
+		});
 	}
 	
 	let getCellElementRow = function(element){

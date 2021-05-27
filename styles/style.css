@@ -268,3 +268,7 @@ body {
 .hidden {
 	display: none !important;
 }
+
+.conflict {
+	background-color: red;
+}
